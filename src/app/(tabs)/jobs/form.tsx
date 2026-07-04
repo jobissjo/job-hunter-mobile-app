@@ -71,14 +71,6 @@ export default function JobFormScreen() {
   const [modalMode, setModalMode] = useState<'skills' | 'preferred'>('skills');
   const [statusModalVisible, setStatusModalVisible] = useState(false);
   const [searchSkillQuery, setSearchSkillQuery] = useState('');
-
-  useEffect(() => {
-    fetchFormOptions();
-    if (editId) {
-      fetchJobDetails();
-    }
-  }, [editId]);
-
   const fetchFormOptions = async () => {
     setLoading(true);
     try {
@@ -127,6 +119,14 @@ export default function JobFormScreen() {
       Alert.alert('Error', 'Failed to load application details');
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchFormOptions();
+    if (editId) {
+      fetchJobDetails();
+    }
+  }, [editId]);
 
   const handleSave = async () => {
     if (!position || !companyName || !location || !status) {

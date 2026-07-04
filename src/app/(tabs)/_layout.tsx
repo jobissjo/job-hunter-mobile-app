@@ -98,6 +98,7 @@ export default function TabLayout() {
         options={{
           title: 'My Profile',
           tabBarLabel: 'Profile',
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <SymbolView
               name={{ ios: 'person.fill', android: 'person', web: 'person' }}

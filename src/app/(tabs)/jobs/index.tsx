@@ -49,6 +49,23 @@ export default function JobsScreen() {
   const isDark = scheme === 'dark';
   const colors = Colors[scheme === 'unspecified' || !scheme ? 'light' : scheme];
 
+  const applyFilters = (list: JobApplication[], query: string, status: string | null) => {
+    let filtered = [...list];
+    if (query) {
+      const q = query.toLowerCase();
+      filtered = filtered.filter(
+        (app) =>
+          app.position.toLowerCase().includes(q) ||
+          app.company_name.toLowerCase().includes(q) ||
+          app.location.toLowerCase().includes(q)
+      );
+    }
+    if (status) {
+      filtered = filtered.filter((app) => app.status === status);
+    }
+    setFilteredApps(filtered);
+  };
+
   const fetchApplications = async () => {
     try {
       const response = await api.get<any>('/job-applications/');
@@ -72,23 +89,6 @@ export default function JobsScreen() {
   const onRefresh = () => {
     setRefreshing(true);
     fetchApplications();
-  };
-
-  const applyFilters = (list: JobApplication[], query: string, status: string | null) => {
-    let filtered = [...list];
-    if (query) {
-      const q = query.toLowerCase();
-      filtered = filtered.filter(
-        (app) =>
-          app.position.toLowerCase().includes(q) ||
-          app.company_name.toLowerCase().includes(q) ||
-          app.location.toLowerCase().includes(q)
-      );
-    }
-    if (status) {
-      filtered = filtered.filter((app) => app.status === status);
-    }
-    setFilteredApps(filtered);
   };
 
   const handleSearch = (text: string) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,13 +10,11 @@ import {
   Alert,
   useColorScheme,
   Linking,
-  Platform,
 } from 'react-native';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { api } from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { Colors, Spacing } from '@/constants/theme';
 import { SymbolView } from 'expo-symbols';
 
@@ -40,6 +38,7 @@ interface ProfileData {
 
 export default function ProfileScreen() {
   const { logout } = useAuth();
+  const router = useRouter();
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -261,6 +260,30 @@ export default function ProfileScreen() {
             ) : null}
           </View>
         ) : null}
+
+        {/* Settings & History */}
+        <View style={[styles.sectionCard, { backgroundColor: colors.backgroundElement, borderColor: isDark ? '#374151' : '#e5e7eb' }]}>
+          <ThemedText style={styles.sectionTitle}>Settings & Logs</ThemedText>
+          <View style={styles.divider} />
+          
+          <TouchableOpacity onPress={() => router.push('/profile/activity-log')} style={styles.menuRow}>
+            <View style={styles.menuLeft}>
+              <SymbolView name={{ ios: 'clock.fill', android: 'history', web: 'history' } as any} size={20} tintColor="#3b82f6" />
+              <ThemedText style={styles.menuLabel}>Activity Log</ThemedText>
+            </View>
+            <SymbolView name={{ ios: 'chevron.right', android: 'chevron_right', web: 'chevron_right' } as any} size={16} tintColor={isDark ? '#9ca3af' : '#6b7280'} />
+          </TouchableOpacity>
+
+          <View style={styles.divider} />
+
+          <TouchableOpacity onPress={() => router.push('/profile/job-status')} style={styles.menuRow}>
+            <View style={styles.menuLeft}>
+              <SymbolView name={{ ios: 'tag.fill', android: 'sell', web: 'sell' } as any} size={20} tintColor="#10b981" />
+              <ThemedText style={styles.menuLabel}>Job Statuses</ThemedText>
+            </View>
+            <SymbolView name={{ ios: 'chevron.right', android: 'chevron_right', web: 'chevron_right' } as any} size={16} tintColor={isDark ? '#9ca3af' : '#6b7280'} />
+          </TouchableOpacity>
+        </View>
 
         {/* Action Buttons */}
         <View style={styles.buttonsGroup}>
@@ -537,6 +560,21 @@ const styles = StyleSheet.create({
   },
   socialLabel: {
     fontSize: 14,
+    fontWeight: '600',
+  },
+  menuRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: Spacing.two,
+  },
+  menuLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.three,
+  },
+  menuLabel: {
+    fontSize: 15,
     fontWeight: '600',
   },
   buttonsGroup: {

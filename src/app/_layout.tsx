@@ -1,8 +1,7 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
+import { DarkTheme, DefaultTheme, ThemeProvider, Slot, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useColorScheme, ActivityIndicator, View } from 'react-native';
 import { useEffect } from 'react';
-import { Slot, useRouter, useSegments } from 'expo-router';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
 
@@ -26,7 +25,7 @@ function AuthGate() {
       // Redirect to dashboard page if logged in
       router.replace('/');
     }
-  }, [user, loading, segments]);
+  }, [user, loading, segments, router]);
 
   if (loading) {
     return (

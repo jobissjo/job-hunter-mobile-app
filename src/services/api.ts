@@ -1,6 +1,17 @@
+import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 import { tokenStorage } from './storage';
 
-const API_BASE_URL = 'https://job-haunt-fastapi-backend.onrender.com/api';
+const getApiBaseUrl = () => {
+  if (Platform.OS === 'web') {
+    return 'http://localhost:8000/api';
+  }
+  const debuggerHost = Constants.expoConfig?.hostUri;
+  const localhost = debuggerHost ? debuggerHost.split(':')[0] : '192.168.1.36';
+  return `http://${localhost}:8000/api`;
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 interface RequestOptions extends RequestInit {
   params?: Record<string, string | number | boolean>;
@@ -60,7 +71,6 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
     }
 
     if (!response.ok) {
-      const errorMessage = data?.message || data?.detail || `Request failed with status ${response.status}`;
       throw { response: { status: response.status, data } };
     }
 
