@@ -4,11 +4,12 @@ import { tokenStorage } from './storage';
 
 const getApiBaseUrl = () => {
   if (Platform.OS === 'web') {
-    return 'http://localhost:8000/api';
+    return 'https://job-haunt-fastapi-backend.onrender.com/api';
   }
-  const debuggerHost = Constants.expoConfig?.hostUri;
-  const localhost = debuggerHost ? debuggerHost.split(':')[0] : '192.168.1.36';
-  return `http://${localhost}:8000/api`;
+  // const debuggerHost = Constants.expoConfig?.hostUri;
+  // const localhost = debuggerHost ? debuggerHost.split(':')[0] : '192.168.1.36';
+  // return `http://${localhost}:8000/api`;
+  return 'https://job-haunt-fastapi-backend.onrender.com/api';
 };
 
 const API_BASE_URL = getApiBaseUrl();
